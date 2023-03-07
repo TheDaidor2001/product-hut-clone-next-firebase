@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/core": "^7.21.0",
+    "@emotion/babel-plugin": "^11.10.6",
+    "@emotion/react": "^11.10.6",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "next": "13.2.3",

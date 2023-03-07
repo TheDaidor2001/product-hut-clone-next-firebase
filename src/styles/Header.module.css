@@ -1,0 +1,81 @@
+.header {
+    border-bottom: 2px solid var(--gris3);
+    padding: 1rem 0;
+}
+
+.contenedorHeader {
+    max-width: 1200px;
+    width: 95%;
+    margin: 0 autp;
+}
+
+@media (min-width: 768px){
+    .contenedorHeader {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.logo {
+    color: var(--naranja);
+    font-size: 4rem;
+    line-height: 0;
+    font-weight: 700;
+    font-family: 'Roboto Slab', serif;
+    margin-right: 2rem;
+}
+
+.wrap {
+    display: flex;
+    align-items: center;
+}
+.parrafo {
+    margin-right: 2rem;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.inputText {
+    border: 1px solid var(--gris3);
+    padding: 1rem;
+    min-width: 300px;
+}
+.formulario {
+    position: relative;
+}
+
+.botonSubmit {
+    height: 3rem;
+    width: 3rem;
+    display: block;
+    background-size: 4rem;
+    background-image: url('./../../public/img/buscar.png');
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 1rem;
+    top: 1px;
+    background-color: white;
+    border: none;
+    text-indent: -9999px;
+}
+.inputSubmit {
+    cursor: pointer;
+}
+
+.nav {
+    padding-left: 2rem;
+}
+
+.nav a {
+    font-size: 1.8rem;
+    margin-left: 2rem;
+    color: var(--gris2);
+    font-family: 'PT Sans', sans-serif;
+}
+
+.nav a:last-child {
+    margin-right: 0;
+}
