@@ -77,3 +77,8 @@ a {
     background-color: white;
     color: #000;
 }
+
+.mainText {
+    text-align: center;
+    margin-top: 5rem;
+}

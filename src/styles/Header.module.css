@@ -6,7 +6,7 @@
 .contenedorHeader {
     max-width: 1200px;
     width: 95%;
-    margin: 0 autp;
+    margin: 0 auto;
 }
 
 @media (min-width: 768px){
