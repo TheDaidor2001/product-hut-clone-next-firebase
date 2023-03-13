@@ -15,12 +15,21 @@
     font-size: 1.8rem;
 }
 
-.campo > input {
+.campo > input, .area  {
     flex: 1;
     padding: 1rem;
 }
+.legenda {
+    margin: 0rem 0;
+    border: 1px solid #e1e1e1;
+    font-size: 2rem;
+    padding: 2rem;
+}
+.area {
+    height: 400px;
+}
 
-.inputSubmit {
+.inputSubmit{
     background-color: var(--naranja);
     width: 100%;
     padding: 1.5rem;

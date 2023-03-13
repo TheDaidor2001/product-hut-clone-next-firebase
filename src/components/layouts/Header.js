@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { Buscar } from "../ui/Buscar";
 import { Nav } from "./Nav";
+import { FirebaseContext } from "../../../firebase";
 
 import Styles from "../../styles/Header.module.css";
+import { useContext } from "react";
 
 export const Header = () => {
-  const user = false;
+  const {usuario, firebase} = useContext(FirebaseContext);
 
   return (
     <header className={Styles.header}>
@@ -21,11 +23,11 @@ export const Header = () => {
         </div>
 
         <div className={Styles.wrap}>
-          {user ? (
+          {usuario ? (
             <>
-              <p className={Styles.parrafo}>Hola: Daniel</p>
+              <p className={Styles.parrafo}>Hola: {usuario?.displayName}</p>
 
-              <button className="boton bg1" type="button">
+              <button className="boton bg1" type="button" onClick={() => firebase.cerrarSesion()}>
                 Cerrar Sesión
               </button>
             </>
