@@ -1,33 +1,101 @@
 import { Layout } from "@/components/layouts/Layout";
 import Style from "../styles/Formularios.module.css";
-import Router from "next/router";
-import firebase from "../../firebase";
+import Router, { useRouter } from "next/router";
+import { FirebaseContext } from "../../firebase";
+import { ref, getDownloadURL, uploadBytesResumable } from "@firebase/storage";
+import { useState, useContext } from "react";
+import { collection, addDoc } from "firebase/firestore";
 
 //validaciones
 
 import { useValidacion } from "@/hooks/useValidacion";
-import validarCrearCuenta from "@/validacion/validarCrearCuenta";
-import { useState } from "react";
+import validarCrearProducto from "@/validacion/validarCrearProducto";
 
 const STATE_INICIAL = {
   nombre: "",
   empresa: "",
-  imagen: "",
-  url: '',
-  descripcion: ''
+  //imagen: "",
+  url: "",
+  descripcion: "",
 };
 
 export default function NuevoProducto() {
   const [error, guardarError] = useState(false);
 
+  // States para la subida de la imagen
+  const [uploading, setUploading] = useState(false);
+  const [URLImage, setURLImage] = useState("");
+
   const { valores, errores, handleChange, handleSubmit, handleBlur } =
-    useValidacion(STATE_INICIAL, validarCrearCuenta, crearCuenta);
+    useValidacion(STATE_INICIAL, validarCrearProducto, crearProducto);
 
   const { nombre, empresa, imagen, url, descripcion } = valores;
 
-  async function crearCuenta() {
-   
+  //context con el crud de firebase
+  const { usuario, firebase } = useContext(FirebaseContext);
+  const router = useRouter();
+
+  async function crearProducto() {
+    //si no esta autenticado
+    if (!usuario) {
+      return router.push("/login");
+    }
+
+    //crear el objeto de nuevo producto
+    const producto = {
+      nombre,
+      empresa,
+      url,
+      URLImage,
+      descripcion,
+      votos: 0,
+      comentarios: [],
+      creado: Date.now(),
+    };
+
+    //insertarlo en la base de datos
+    try {
+      await addDoc(collection(firebase.db, "productos"), producto);
+
+      return router.push('/')
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  const handleImageUpload = (e) => {
+    // Se obtiene referencia de la ubicación donde se guardará la imagen
+    const file = e.target.files[0];
+    const imageRef = ref(firebase.storage, "products/" + file.name);
+
+    // Se inicia la subida
+    setUploading(true);
+    const uploadTask = uploadBytesResumable(imageRef, file);
+
+    // Registra eventos para cuando detecte un cambio en el estado de la subida
+    uploadTask.on(
+      "state_changed",
+      // Muestra progreso de la subida
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Subiendo imagen: ${progress}% terminado`);
+      },
+      // En caso de error
+      (error) => {
+        setUploading(false);
+        console.error(error);
+      },
+      // Subida finalizada correctamente
+      () => {
+        setUploading(false);
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          console.log("Imagen disponible en:", url);
+          setURLImage(url);
+        });
+      }
+    );
+  };
   return (
     <div>
       <Layout>
@@ -72,12 +140,11 @@ export default function NuevoProducto() {
               <div className={Style.campo}>
                 <label htmlFor="imagen">Imagen</label>
                 <input
+                  accept="image/*"
                   type="file"
-                  id="imagen"
-                  name="imagen"
-                  value={imagen}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  id="image"
+                  name="image"
+                  onChange={handleImageUpload}
                 />
               </div>
 
@@ -91,6 +158,7 @@ export default function NuevoProducto() {
                   type="url"
                   id="url"
                   name="url"
+                  placeholder="URL de tu producto"
                   value={url}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -114,7 +182,9 @@ export default function NuevoProducto() {
                 />
               </div>
 
-              {errores.descripcion && <p className={Style.error}>{errores.descripcion}</p>}
+              {errores.descripcion && (
+                <p className={Style.error}>{errores.descripcion}</p>
+              )}
             </fieldset>
 
             {error && <p>{error}</p>}
