@@ -22,7 +22,7 @@ export const DetallesProducto = ({ producto }) => {
           <img className={Styles.imagen} src={URLImage} alt="Imagen" />
         </div>
         <div>
-          <Link href="" className={Styles.titulo}>{nombre}</Link>
+          <Link href="/productos/[id]" as={`/productos/${id}`} className={Styles.titulo}>{nombre}</Link>
           <p className={Styles.descripcion}>{descripcion}</p>
           <div className={Styles.comentarios}>
             <div>

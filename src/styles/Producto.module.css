@@ -80,3 +80,44 @@
     font-size: 2rem;
     font-weight: 700;
 }
+
+.textoProducto {
+    text-align: center;
+    margin-top: 5rem;
+}
+
+
+@media(min-width: 768px){
+    .contenedorProducto {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        column-gap: 2rem;
+    }
+}
+
+.comentario2 {
+    margin: 2rem 0;
+}
+
+.votar {
+ margin-top: 5rem;   
+}
+
+.lista {
+    border: 1px solid #e1e1e1;
+    padding: 2rem;
+}
+
+.lista  span {
+    font-weight: bold;
+}
+
+.creadorProducto {
+    padding: .5rem 2rem;
+    background-color: #Da552f;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+}
